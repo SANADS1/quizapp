@@ -12,7 +12,7 @@ import javax.annotation.processing.Generated;
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer Id;
+    private Integer id;
     private String questionTitle;
     private String option1;
     private String option2;

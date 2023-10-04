@@ -1,3 +1,4 @@
+/*
 package com.sanads1.quizapp.data;
 
 import com.sanads1.quizapp.repository.QuestionRepository;
@@ -46,3 +47,4 @@ public class DummyDataSeeder {
         return questions;
     }
 }
+*/
