@@ -3,11 +3,14 @@ package com.sanads1.quizapp.service;
 import ExceptionHandling.ResourceNotFoundException;
 import com.sanads1.quizapp.repository.QuestionRepository;
 import com.sanads1.quizapp.model.Question;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,20 +22,31 @@ public class QuestionService {
     public QuestionService(QuestionRepository questionRepository){
         _question = questionRepository;
     }
-    public List<Question> getAllQuestions() {
-       return  _question.findAll();
+    public ResponseEntity<List<Question>> getAllQuestions() {
+        try {
+            return new ResponseEntity<>(_question.findAll(), HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
     }
 
-    public List<Question> getQuestionsByCategory(String category) {
+    public ResponseEntity<List<Question>> getQuestionsByCategory(String category) {
         logger.info("Fetching questions for category: {}", category);
         List<Question> questions = _question.findByCategoryIgnoreCase(category);
         logger.info("Found {} questions for category: {}", questions.size(), category);
-        return questions;
+        try {
+            return new ResponseEntity<>(questions, HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
+
     }
 
-    public String addQuestion(Question question){
+    public ResponseEntity<String> addQuestion(Question question){
         _question.save(question);
-        return "success";
+        return new ResponseEntity<>("success", HttpStatus.CREATED);
     }
 
     public String updateQuestion(Question updatedQuestion) {

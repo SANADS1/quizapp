@@ -14,5 +14,8 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
      @Query("SELECT q FROM Question q WHERE lower(q.category) = lower(:category)")
      List<Question> findByCategoryIgnoreCase(@Param("category") String category);
 
+     @Query(value = "SELECT * FROM Question q WHERE lower(q.category)= lower(:category) ORDER BY RANDOM() LIMIT:numQ", nativeQuery = true)
+     List<Question> findRandomQuestionsByCategory(String category, int numQ);
+
 }
 
